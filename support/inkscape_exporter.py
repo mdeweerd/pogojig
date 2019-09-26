@@ -6,6 +6,8 @@ import tempfile
 
 from pogojig.inkscape import effect, inkscape
 
+from xvfbwrapper import Xvfb
+
 
 def _unfuck_svg_document(temp_svg_path):
     """
@@ -45,17 +47,19 @@ if __name__ == '__main__':
     parser.add_argument('infile', metavar='input.svg', help='Inkscape SVG input file')
     parser.add_argument('outfile', metavar='output.dxf', help='DXF output file')
     args = parser.parse_args()
-    
-    effect.ExportEffect.check_document_units(args.infile)
-    
-    with tempfile.TemporaryDirectory() as tmpdir:
-        temp_svg_path = os.path.join(tmpdir, os.path.basename(args.infile))
-        shutil.copyfile(args.infile, temp_svg_path)
-        
-        _unfuck_svg_document(temp_svg_path)
-        
-        export_effect = effect.ExportEffect()
-        export_effect.affect(args=[temp_svg_path], output=False)
-        
-    with open(args.outfile, 'w') as f:
-        export_effect.write_dxf(f)
+
+    with Xvfb():
+        effect.ExportEffect.check_document_units(args.infile)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            temp_svg_path = os.path.join(tmpdir, os.path.basename(args.infile))
+            shutil.copyfile(args.infile, temp_svg_path)
+
+            _unfuck_svg_document(temp_svg_path)
+
+            export_effect = effect.ExportEffect()
+            export_effect.affect(args=[temp_svg_path], output=False)
+
+        with open(args.outfile, 'w') as f:
+            export_effect.write_dxf(f)
+
