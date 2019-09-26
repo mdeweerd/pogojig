@@ -275,6 +275,7 @@ if __name__ == '__main__':
     parser.add_argument('-y', '--yspace', type=int, default=200, help='Schematic pin Y spacing in mil (default: 200)')
     parser.add_argument('-a', '--annular', type=float, default=0.5, help='Pogo pin annular ring width in mm (default: 0.5)')
     parser.add_argument('-l', '--svg-layer', type=str, default='Test Points', help='Name of SVG layer containing pogo pins')
+    parser.add_argument('-n', '--name', default='jig', help='Output KiCAD project name')
     args = parser.parse_args()
 
     if not path.exists(args.output):
@@ -307,16 +308,15 @@ if __name__ == '__main__':
         (x1, y1, _z1), (x2, y2, _z2) = line.dxf.start, line.dxf.end
         outline.append(((x1, -y1), (x2, -y2)))
 
-    out_name = path.basename(args.output)
-    with open(path.join(args.output, f'{out_name}.sch'), 'w', encoding='utf8') as sch:
-        sch.write(sch_template(f'{out_name} generated schematic (PogoJig v{__version__})', len(pins), yspace=args.yspace))
+    with open(path.join(args.output, f'{args.name}.sch'), 'w', encoding='utf8') as sch:
+        sch.write(sch_template(f'{args.name} generated schematic (PogoJig v{__version__})', len(pins), yspace=args.yspace))
 
-    with open(path.join(args.output, f'{out_name}.kicad_pcb'), 'w', encoding='utf8') as pcb:
+    with open(path.join(args.output, f'{args.name}.kicad_pcb'), 'w', encoding='utf8') as pcb:
         pcb.write(pcb_template(outline, pins, annular=args.annular))
 
-    with open(path.join(args.output, f'{out_name}.pro'), 'w', encoding='utf8') as f:
+    with open(path.join(args.output, f'{args.name}.pro'), 'w', encoding='utf8') as f:
         f.write(pkgutil.get_data('pogojig.kicad', 'kicad.pro').decode('utf8'))
 
-    with open(path.join(args.output, f'{out_name}-cache.lib'), 'w', encoding='utf8') as f:
+    with open(path.join(args.output, f'{args.name}-cache.lib'), 'w', encoding='utf8') as f:
         f.write(pkgutil.get_data('pogojig.kicad', 'kicad-cache.lib').decode('utf8'))
 
