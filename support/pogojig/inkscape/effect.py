@@ -10,7 +10,6 @@ import pkgutil
 import re
 from lxml import etree
 
-from lib import util
 from . import inkex, simpletransform, cubicsuperpath, cspsubdiv, inkscape
 
 
@@ -39,7 +38,7 @@ class ExportEffect(inkex.Effect):
     def __init__(self):
         inkex.Effect.__init__(self)
         
-        self._flatness = float(os.environ['DXF_FLATNESS'])
+        self._flatness = float(os.environ.get('INKSCAPE_DXF_FLATNESS', 0.1))
         
         self._layers = None
         self._paths = None
@@ -139,11 +138,11 @@ class ExportEffect(inkex.Effect):
         
         layer_indices = {l: i for i, l in enumerate(self._layers)}
         
-        file.write(pkgutil.get_data(__name__, 'dxf_header.txt'))
+        file.write(pkgutil.get_data(__name__, 'dxf_header.txt').decode('ASCII'))
         
         def write_instruction(code, value):
-            print >> file, code
-            print >> file, value
+            print(code, file=file)
+            print(value, file=file)
         
         handle_iter = itertools.count(256)
         
@@ -165,7 +164,7 @@ class ExportEffect(inkex.Effect):
                 write_instruction(21, repr(y2 / unit_factor))
                 write_instruction(31, 0.0)
         
-        file.write(pkgutil.get_data(__name__, 'dxf_footer.txt'))
+        file.write(pkgutil.get_data(__name__, 'dxf_footer.txt').decode('ASCII'))
     
     def write_asy(self, file):
         def write_line(format, *args):
@@ -263,18 +262,18 @@ class ExportEffect(inkex.Effect):
         height_attr = document.getroot().get('height')
         
         if height_attr is None:
-            raise util.UserError(
+            raise ValueError(
                 'SVG document has no height attribute. See '
                 'https://github.com/Feuermurmel/openscad-template/wiki/Absolute-Measurements')
         
         _, height_unit = cls._parse_measure(height_attr)
         
         if height_unit is None or height_unit == 'px':
-            raise util.UserError(
+            raise ValueError(
                 'Height of SVG document is not an absolute measure. See '
                 'https://github.com/Feuermurmel/openscad-template/wiki/Absolute-Measurements')
         
         if document.getroot().get('viewBox') is None:
-            raise util.UserError(
+            raise ValueError(
                 'SVG document has no viewBox attribute. See '
                 'https://github.com/Feuermurmel/openscad-template/wiki/Absolute-Measurements')

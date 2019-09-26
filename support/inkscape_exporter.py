@@ -1,6 +1,10 @@
-import os, shutil
-from lib import util
-from . import effect, inkscape
+#!/usr/bin/env python3
+
+import os
+import shutil
+import tempfile
+
+from pogojig.inkscape import effect, inkscape
 
 
 def _unfuck_svg_document(temp_svg_path):
@@ -32,33 +36,26 @@ def _unfuck_svg_document(temp_svg_path):
         command_line.delete_layer(copy)
     
     command_line.apply_to_document('FileSave', 'FileClose', 'FileQuit')
-    
     command_line.run()
 
 
-@util.main
-def main(in_path, out_path):
-    try:
-        _, out_suffix = os.path.splitext(out_path)
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('infile', metavar='input.svg', help='Inkscape SVG input file')
+    parser.add_argument('outfile', metavar='output.dxf', help='DXF output file')
+    args = parser.parse_args()
+    
+    effect.ExportEffect.check_document_units(args.infile)
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        temp_svg_path = os.path.join(tmpdir, os.path.basename(args.infile))
+        shutil.copyfile(args.infile, temp_svg_path)
         
-        effect.ExportEffect.check_document_units(in_path)
+        _unfuck_svg_document(temp_svg_path)
         
-        with util.TemporaryDirectory() as temp_dir:
-            temp_svg_path = os.path.join(temp_dir, os.path.basename(in_path))
-            
-            shutil.copyfile(in_path, temp_svg_path)
-            
-            _unfuck_svg_document(temp_svg_path)
-            
-            export_effect = effect.ExportEffect()
-            export_effect.affect(args=[temp_svg_path], output=False)
-            
-        with open(out_path, 'w') as file:
-            if out_suffix == '.dxf':
-                export_effect.write_dxf(file)
-            elif out_suffix == '.asy':
-                export_effect.write_asy(file)
-            else:
-                raise Exception('Unknown file type: {}'.format(out_suffix))
-    except util.UserError as e:
-        raise util.UserError('While processing {}: {}', in_path, e)
+        export_effect = effect.ExportEffect()
+        export_effect.affect(args=[temp_svg_path], output=False)
+        
+    with open(args.outfile, 'w') as f:
+        export_effect.write_dxf(f)

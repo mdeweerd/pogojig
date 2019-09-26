@@ -35,6 +35,8 @@ import re
 import sys
 from math import *
 
+from lxml import etree
+
 #a dictionary of all of the xmlns prefixes in a standard inkscape doc
 NSS = {
 u'sodipodi' :u'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd',
@@ -107,15 +109,6 @@ def are_near_relative(a, b, eps):
     else:
         return False
 
-
-# third party library
-try:
-    from lxml import etree
-except Exception, e:
-    localize()
-    errormsg(_("The fantastic lxml wrapper for libxml2 is required by inkex.py and therefore this extension. Please download and install the latest version from http://cheeseshop.python.org/pypi/lxml/, or install it through your package manager by a command like: sudo apt-get install python-lxml\n\nTechnical details:\n%s" % (e,)))
-    sys.exit()
-    
 def check_inkbool(option, opt, value):
     if str(value).capitalize() == 'True':
         return True
@@ -126,7 +119,7 @@ def check_inkbool(option, opt, value):
 
 def addNS(tag, ns=None):
     val = tag
-    if ns!=None and len(ns)>0 and NSS.has_key(ns) and len(tag)>0 and tag[0]!='{':
+    if ns!=None and len(ns)>0 and ns in NSS and len(tag)>0 and tag[0]!='{':
         val = "{%s}%s" % (NSS[ns], tag)
     return val
 

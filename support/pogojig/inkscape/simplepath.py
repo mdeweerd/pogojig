@@ -49,7 +49,7 @@ def lexPath(d):
             offset = m.end()
             continue
         #TODO: create new exception
-        raise Exception, 'Invalid path data!'
+        raise ValueError('Invalid path data!')
 '''
 pathdefs = {commandfamily:
     [
@@ -71,6 +71,7 @@ pathdefs = {
     'A':['A', 7, [float, float, float, int, int, float, float], ['r','r','a',0,'s','x','y']], 
     'Z':['L', 0, [], []]
     }
+
 def parsePath(d):
     """
     Parse SVG path and return an array of segments.
@@ -87,14 +88,14 @@ def parsePath(d):
     
     while 1:
         try:
-            token, isCommand = lexer.next()
+            token, isCommand = next(lexer)
         except StopIteration:
             break
         params = []
         needParam = True
         if isCommand:
             if not lastCommand and token.upper() != 'M':
-                raise Exception, 'Invalid path, must begin with moveto.'    
+                raise ValueError('Invalid path, must begin with moveto.')
             else:                
                 command = token
         else:
@@ -107,16 +108,16 @@ def parsePath(d):
                 else:
                     command = pathdefs[lastCommand.upper()][0].lower()
             else:
-                raise Exception, 'Invalid path, no initial command.'    
+                raise ValueError('Invalid path, no initial command.')
         numParams = pathdefs[command.upper()][1]
         while numParams > 0:
             if needParam:
                 try: 
-                    token, isCommand = lexer.next()
+                    token, isCommand = next(lexer)
                     if isCommand:
-                        raise Exception, 'Invalid number of parameters'
+                        raise ValueError('Invalid number of parameters')
                 except StopIteration:
-                    raise Exception, 'Unexpected end of path'
+                    raise ValueError('Unexpected end of path')
             cast = pathdefs[command.upper()][2][-numParams]
             param = cast(token)
             if command.islower():

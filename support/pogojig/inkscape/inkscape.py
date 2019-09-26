@@ -1,46 +1,34 @@
 import os
+import subprocess
 import xml.etree.ElementTree as etree
-
-from lib import util
-
 
 def get_inkscape_layers(svg_path):
     document = etree.parse(svg_path)
     
-    def iter_layers():
-        nodes = document.findall(
-            '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}groupmode="layer"]')
-        
-        for i in nodes:
-            inkscape_name = i.get('{http://www.inkscape.org/namespaces/inkscape}label').strip()
-            
-            if inkscape_name.endswith(']'):
-                export_name, args = inkscape_name[:-1].rsplit('[', 1)
-                
-                export_name = export_name.strip()
-                args = args.strip()
-                
-                use_paths = 'p' in args
-            else:
-                use_paths = False
-                export_name = inkscape_name
-            
-            yield Layer(inkscape_name, export_name, use_paths)
+    layers = []
+    nodes = document.findall(
+        '{http://www.w3.org/2000/svg}g[@{http://www.inkscape.org/namespaces/inkscape}groupmode="layer"]')
     
-    return list(iter_layers())
+    for i in nodes:
+        inkscape_name = i.get('{http://www.inkscape.org/namespaces/inkscape}label').strip()
+        
+        if inkscape_name.endswith(']'):
+            export_name, args = inkscape_name[:-1].rsplit('[', 1)
+            
+            export_name = export_name.strip()
+            args = args.strip()
+            
+            use_paths = 'p' in args
+        else:
+            use_paths = False
+            export_name = inkscape_name
+        
+        layers.append(Layer(inkscape_name, export_name, use_paths))
+    return layers
 
 
 def _inkscape(svg_path, verbs):
-    def iter_args():
-        yield os.environ['INKSCAPE']
-        
-        for i in verbs:
-            yield '--verb'
-            yield i
-        
-        yield svg_path
-    
-    util.command(list(iter_args()))
+    subprocess.run([os.environ.get('INKSCAPE', 'inkscape'), *(x for verb in verbs for x in ('--verb', verb)), svg_path])
 
 
 class Layer(object):

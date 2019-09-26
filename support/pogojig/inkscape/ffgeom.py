@@ -20,11 +20,6 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 """
 import math
-try:
-    NaN = float('NaN')
-except ValueError:
-    PosInf = 1e300000
-    NaN = PosInf/PosInf
 
 class Point:
     precision = 5
@@ -72,11 +67,11 @@ class Segment:
     def slope(self):
         if self.delta_x() != 0:
             return self.delta_x() / self.delta_y()
-        return NaN
+        return math.nan
     def intercept(self):
         if self.delta_x() != 0:
             return self[1]['y'] - (self[0]['x'] * self.slope())
-        return NaN
+        return math.nan
     def distanceToPoint(self, p):
         s2 = Segment(self[0],p)
         c1 = dot(s2,self)
@@ -88,7 +83,8 @@ class Segment:
         return self.perpDistanceToPoint(p)
     def perpDistanceToPoint(self, p):
         len = self.length()
-        if len == 0: return NaN
+        if len == 0:
+            return math.nan
         return math.fabs(((self[1]['x'] - self[0]['x']) * (self[0]['y'] - p['y'])) - \
             ((self[0]['x'] - p['x']) * (self[1]['y'] - self[0]['y']))) / len
     def angle(self):
@@ -96,13 +92,13 @@ class Segment:
     def length(self):
         return math.sqrt((self.delta_x() ** 2) + (self.delta_y() ** 2))
     def pointAtLength(self, len):
-        if self.length() == 0: return Point(NaN, NaN)
+        if self.length() == 0: return Point(math.nan, math.nan)
         ratio = len / self.length()
         x = self[0]['x'] + (ratio * self.delta_x())
         y = self[0]['y'] + (ratio * self.delta_y())
         return Point(x, y)
     def pointAtRatio(self, ratio):
-        if self.length() == 0: return Point(NaN, NaN)
+        if self.length() == 0: return Point(math.nan, math.nan)
         x = self[0]['x'] + (ratio * self.delta_x())
         y = self[0]['y'] + (ratio * self.delta_y())
         return Point(x, y)
@@ -132,7 +128,7 @@ def intersectSegments(s1, s2):
         x = x1 + ((num / denom) * (x2 - x1))
         y = y1 + ((num / denom) * (y2 - y1))
         return Point(x, y)
-    return Point(NaN, NaN)
+    return Point(math.nan, math.nan)
 
 def dot(s1, s2):
     return s1.delta_x() * s2.delta_x() + s1.delta_y() * s2.delta_y()

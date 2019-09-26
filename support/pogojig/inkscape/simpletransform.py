@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 '''
 Copyright (C) 2006 Jean-Francois Barraud, barraud@math.univ-lille1.fr
 Copyright (C) 2010 Alvin Penner, penner@vaxxine.com
@@ -21,8 +20,10 @@ barraud@math.univ-lille1.fr
 This code defines several functions to make handling of transform
 attribute easier.
 '''
-import inkex, cubicsuperpath
+
 import math, re
+
+from . import inkex, cubicsuperpath
 
 def parseTransform(transf,mat=[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]):
     if transf=="" or transf==None:
@@ -117,7 +118,7 @@ def applyTransformToPath(mat,path):
 def fuseTransform(node):
     if node.get('d')==None:
         #FIXME: how do you raise errors?
-        raise AssertionError, 'can not fuse "transform" of elements that have no "d" attribute'
+        raise AssertionError('can not fuse "transform" of elements that have no "d" attribute')
     t = node.get("transform")
     if t == None:
         return
