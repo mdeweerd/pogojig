@@ -100,6 +100,13 @@ def render_download():
             as_attachment=True,
             attachment_filename=f'{path.splitext(session["filename"])[0]}_pogojig.zip')
 
+@app.route('/pogojig_template_empty.svg')
+def static_template():
+    return send_file('static/pogojig_template_empty.svg',
+            mimetype='application/octet-stream',
+            as_attachment=True,
+            attachment_filename='pogojig_template_empty.svg')
+
 @app.route('/session_reset', methods=['POST'])
 @require_session_id
 def session_reset():
