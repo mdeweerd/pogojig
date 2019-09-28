@@ -1,0 +1,176 @@
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url(fonts/SourceSansPro-Light.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(fonts/SourceSansPro-Regular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(fonts/SourceSansPro-Bold.woff2) format('woff2');
+}
+
+html {
+    background: #2d2829;
+    background-image: url(bg.svg);
+    color: #ffffff;
+    font-family: 'Source Sans Pro';
+    font-size: 14pt;
+    font-weight: 300;
+}
+
+a:active, a:hover, a:visited, a:link {
+    color: #fff;
+    font-weight: 400;
+}
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0 0 0;
+    padding: 3mm 3mm 3mm 3mm;
+}
+
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 38em;
+    max-width: 100%;
+}
+
+
+.header {
+    text-align: center;
+}
+
+.header > img.title {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.header > .blurb {
+    text-align: justify;
+    hyphens: auto;
+    padding-bottom: 50px;
+}
+
+
+.annot {
+    display: flex;
+    align-items: center;
+    align-content: start;
+}
+
+.annot.top {
+    align-items: end;
+    flex-direction: row-reverse;
+    align-content: start;
+}
+
+.annot.bottom {
+    align-items: start;
+    flex-direction: row;
+}
+
+.annot.top > .desc {
+    padding-left: 1em;
+    padding-bottom: 2em;
+    max-width: 60%;
+}
+
+.annot.bottom > .desc {
+    padding-right: 1em;
+    padding-top: 4.5em;
+    max-width: 60%;
+}
+
+.annot > .bubble {
+    max-width: 30%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-align: center;
+    font-size: .7rem;
+}
+
+.annot.top > .bubble {
+    background-image: url(bubble1-small.png);
+    padding: 2em 2em 5em 2em;
+}
+
+.annot.bottom > .bubble {
+    background-image: url(bubble2-small.png);
+    padding: 7em 2em 5em 2em;
+}
+
+a.btn {
+    display: block;
+    font-weight: 700;
+    background-color: #b50000;
+    border-radius: 0.5em;
+    padding: .4em 1em .4em 1em;
+    margin-top: .2em;
+}
+
+a.btn:active, a.btn:hover, a.btn:visited, a.btn:link {
+    text-decoration: none;
+}
+
+
+.workflow-images {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.workflow-images > .gerber {
+    width: 220px;
+}
+
+.workflow-images > .svg {
+    width: 300px;
+}
+
+.workflow-images > .models {
+    width: 280px;
+}
+
+.workflow-images > .arrow {
+    width: 120px
+}
+
+
+.footer {
+    opacity: 0.5;
+    text-align: center;
+    padding-top: 5em;
+}
+
+.footer > img {
+    padding-bottom: .5em;
+}
+
+.footer > a {
+    display: block;
+}
+
+.footer > .copyright {
+    padding-top: 1em;
+}
+

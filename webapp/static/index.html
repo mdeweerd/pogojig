@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Pogojig Test Fixture Generator</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <link rel="icon" type="image/png" href="static/favicon-512.png">
+    <link rel="apple-touch-icon" href="static/favicon-512.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="layout-container">
+      <div class="header">
+        <img class="title" alt="Pogojig" src="static/pogojig-title.png">
+        <p class="blurb">
+        Pogojig is a tool to generate pogo pin test fixtures for printed circuit board manufacturing and development.
+        Pogojig generates a 3d printable board holder with holes for mounting pogo pins, along with a matching KiCAD
+        PCB project for a pogo pin breakout and mounting PCB.
+
+        You can start with either Gerber files exported from any PCB toolchain, or you can do a free-form layout using
+        the <a href="static/static_template.svg">static Inkscape SVG template</a> if you
+        wan to work from construction drawings, scanned or photographed PCBs etc.
+        </p>
+      </div>
+
+      <div class="annot top">
+        <div class="desc right">
+          <strong>1.</strong> Convert your Gerbers to an SVG template and draw pogo pins, mounting holes and cutouts
+          into the template. Don't have gerbers? Start with an
+          <a href="static/pogojig_template_empty.svg">empty template</a>.
+        </div>
+        <div class="bubble left">
+          <div>click to open</div>
+          <a class="btn red" href="pogospace">Pogospace</a>
+        </div>
+      </div>
+
+      <div class="workflow-images">
+        <img class="gerber" alt="Gerber files" src="static/realistic_render.png" width="11em">
+        <img class="arrow" alt="arrow pointing right" src="static/arrow-small.png" width="6em">
+        <img class="svg" alt="SVG blueprint" src="static/cad_example.svg" width="15em">
+        <img class="arrow" alt="arrow pointing right" src="static/arrow-small.png" width="6em">
+        <img class="models" alt="3D models of matching plastic holder and base PCB" src="static/3d_models.png" width="14em">
+      </div>
+
+      <div class="annot bottom">
+        <div class="desc left">
+          <strong>2.</strong> Upload your SVG to generate STL and OpenSCAD files for the plastic holder, and KiCAD and
+          DXF files for the base PCB.
+        </div>
+        <div class="bubble right">
+          <div>click to open</div>
+          <a class="btn red">Jigerator</a>
+        </div>
+      </div>
+
+      <div class="footer">
+          <img class="title" alt="Made with love in Berlin" src="static/footer_love.svg">
+
+          <a href="https://github.com/jaseg/pogojig">i can haz sources</a>
+          <a href="https://blog.jaseg.net/imprint">imprint</a>
+
+          <div class="copyright">&#169; 2019 jaseg</div>
+      </div>
+    </div>
+  </body>
+</html>

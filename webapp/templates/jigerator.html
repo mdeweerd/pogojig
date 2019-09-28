@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Pogojig SVG Upload</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='favicon-512.png')}}">
+    <link rel="apple-touch-icon" href="{{url_for('static', filename='favicon-512.png')}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="layout-container">
+      <div class="header">
+        <img class="title" alt="Pogojig" src="{{url_for('static', filename='pogojig-title.png')}}">
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+          <div class="flashes">
+            {% for category, message in messages %}
+              <div class="flash flash-{{category}}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form id="reset-form" method="POST" action="{{url_for('session_reset')}}" class="reset-form">{{reset_form.csrf_token}}</form>
+
+      <div class="controls">
+        <form id="svg-upload-form" method="POST" action="{{url_for('upload_svg')}}" enctype="multipart/form-data">
+          {{svg_form.csrf_token}}
+        </form>
+        <div class="form-controls">
+          <div class="upload-label">Upload completed SVG file:</div>
+          <input class='upload-button' form="gerber-upload-form" name="upload_file" size="20" type="file">
+        </div>
+        <div class="submit-buttons">
+          <input class='reset-button' form="reset-form" type="submit" value="Start over">
+          <input class='submit-button' form="svg-upload-form" type="submit" value="Submit">
+        </div>
+      </div>
+
+      {% if 'render_job' in session or has_renders %}
+      <div class="render_output">
+        {% if 'render_job' in session %}
+        <div class="loading-message">
+          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <div><strong>Processing...</strong></div>
+          <div>(this may take several minutes!)</div>
+        </div>
+        {% else %}
+        <div class="preview-images">
+          <a href="{{url_for('render_download')}}" class="render" style="background-image:url('{{url_for('render_preview')}}');">
+          <div class="overlay">Download model and PCB</div>
+          </a>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %} {# render job #}
+    </div>
+  </body>
+</html>
