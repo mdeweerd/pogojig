@@ -28,7 +28,7 @@ if __name__ == '__main__':
         for job in job_queue.job_iter('render'):
             logging.info(f'Processing {job.type} job {job.id} session {job["session_id"]} from {job.client} submitted {job.created}')
             with job:
-                job.result = subprocess.call(['sudo', '/usr/local/sbin/pogojig_render.sh', job['session_id']])
+                job.result = subprocess.call(['sudo', '/usr/local/sbin/pogojig_generate.sh', job['session_id']])
                 logging.info(f'Finishied processing {job.type} job {job.id}')
     logging.info('Caught SIGINT. Exiting.')
 
