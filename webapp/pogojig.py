@@ -52,9 +52,7 @@ def index():
 @app.route('/jigerator')
 @require_session_id
 def jigerator():
-    forms = {
-            'svg_form': UploadForm(),
-            'reset_form': ResetForm() }
+    forms = { 'svg_form': UploadForm(), 'reset_form': ResetForm() }
 
     if 'render_job' in session:
         job = job_queue[session['render_job']]
@@ -91,6 +89,8 @@ def upload_svg():
 
         render()
         flash(f'SVG file successfully uploaded.', 'success')
+    else:
+        flash(f'Error uploading SVG file: {"; ".join(msg for elem in upload_form.errors.values() for msg in elem)}', 'error')
     return redirect(url_for('jigerator'))
 
 @app.route('/render/download')

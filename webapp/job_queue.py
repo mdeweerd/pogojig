@@ -71,7 +71,7 @@ class Job(dict):
         with self._db as conn:
             conn.execute('UPDATE jobs SET finished=datetime("now"), result=? WHERE id=?', (self.result, self.id,))
 
-    def abort(self, job_id):
-        with self.db as conn:
+    def abort(self):
+        with self._db as conn:
             conn.execute('UPDATE jobs SET aborted=datetime("now") WHERE id=?', (self.id,))
 
