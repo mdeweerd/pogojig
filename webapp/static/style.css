@@ -227,3 +227,11 @@ a.btn:active, a.btn:hover, a.btn:visited, a.btn:link {
     background-color: #d35f5f;
     box-shadow: 1px 2px 4px 1px #000;
 }
+
+.controls {
+    padding-top: 8em;
+}
+
+.render_output {
+    padding-bottom: 8em;
+}

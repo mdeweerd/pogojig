@@ -116,9 +116,9 @@
         </div>
         {% else %}
         <div class="preview-images">
-          <a href="{{url_for('render_download')}}" class="render" style="background-image:url('{{url_for('render_preview')}}');">
-          <div class="overlay">Download model and PCB</div>
-          </a>
+          <a href="{{url_for('render_download', file='sources.zip')}}" class="render">Download renders</a>
+
+          <div id="stl-target" class="madeleine"></div>
         </div>
         {% endif %}
       </div>
@@ -132,5 +132,20 @@
           <div class="copyright">&#169; 2019 jaseg</div>
       </div>
     </div>
+    <!-- STL viewer -->
+    <link href="static/Madeleine.js/src/css/Madeleine.css" rel="stylesheet">
+    <script src="static/Madeleine.js/src/lib/stats.js"></script>
+    <script src="static/Madeleine.js/src/lib/detector.js"></script>
+    <script src="static/Madeleine.js/src/lib/three.min.js"></script>
+    <script src="static/Madeleine.js/src/Madeleine.js"></script>
+    <script>
+    window.onload = function(){
+        var madeleine = new Madeleine({
+          target: 'target', // target div id
+          data: '{{url_for('render_download', file='jig.stl')}}', // data path
+          path: '.' // path to source directory from current html file
+        });
+    }; 
+    </script>
   </body>
 </html>
