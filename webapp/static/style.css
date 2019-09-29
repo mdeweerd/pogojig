@@ -239,7 +239,11 @@ a.btn.green {
 }
 
 .controls {
-    padding-top: 8em;
+    padding-top: 4em;
+}
+
+.banner {
+    padding-top: 4em;
 }
 
 .render_output {

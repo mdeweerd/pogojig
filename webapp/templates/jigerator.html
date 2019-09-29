@@ -25,6 +25,12 @@
 
       <form id="reset-form" method="POST" action="{{url_for('session_reset')}}" class="reset-form">{{reset_form.csrf_token}}</form>
 
+      <div class="banner">
+        This is a web frontend for the <a href="static/pogojig_makefile_template.zip">Makefile template</a>. You can
+        download the <a href="static/pogojig_makefile_template.zip">Makefile template</a> to customize and run this
+        compilation yourself.
+      </div>
+
       <div class="controls">
         <form id="svg-upload-form" method="POST" action="{{url_for('upload_svg')}}" enctype="multipart/form-data">
           {{svg_form.csrf_token}}
