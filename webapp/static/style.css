@@ -122,7 +122,6 @@ body {
 a.btn {
     display: block;
     font-weight: 700;
-    background-color: #b50000;
     border-radius: 0.5em;
     padding: .4em 1em .4em 1em;
     margin-top: .2em;
@@ -131,6 +130,17 @@ a.btn {
 a.btn:active, a.btn:hover, a.btn:visited, a.btn:link {
     text-decoration: none;
 }
+
+a.btn.red {
+    background-color: #b50000;
+    color: #fff;
+}
+
+a.btn.green {
+    background-color: #00b500;
+    color: #fff;
+}
+
 
 
 .workflow-images {
@@ -234,4 +244,8 @@ a.btn:active, a.btn:hover, a.btn:visited, a.btn:link {
 
 .render_output {
     padding-bottom: 8em;
+}
+
+#stl-target {
+    width: 100%;
 }
