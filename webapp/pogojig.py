@@ -93,15 +93,16 @@ def upload_svg():
         flash(f'Error uploading SVG file: {"; ".join(msg for elem in upload_form.errors.values() for msg in elem)}', 'error')
     return redirect(url_for('jigerator'))
 
-@app.route('/render/download/<file>')
+@app.route('/render/download/<path:file>')
 def render_download(file):
-    if file not in ['jig.stl', 'pcb_shape.dxf', 'kicad.zip', 'sources.zip']:
+    if file not in ['jig.stl', 'pcb_shape.dxf', 'kicad.zip', 'sources.zip',
+            'kicad/jig-cache.lib', 'kicad/jig.kicad_pcb', 'kicad/jig.pro', 'kicad/jig.sch']:
         abort(404)
 
     return send_file(tempfile_path(file),
             mimetype='application/zip',
             as_attachment=True,
-            attachment_filename=f'{path.splitext(session["filename"])[0]}_pogojig.zip')
+            attachment_filename=f'{path.splitext(session["filename"])[0]}_{path.basename(file)}')
 
 @app.route('/pogojig_template_empty.svg')
 def static_template():
