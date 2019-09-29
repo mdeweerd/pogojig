@@ -12,20 +12,20 @@ out.zip: out/jig.stl out/pcb_shape.dxf out/kicad
 src/input.preprocessed.dxf: src/input.preprocessed.svg
 	support/inkscape_exporter.py $< $@
 
-out/pcb_shape.dxf: src/pcb_shape.scad src/input.preprocessed.dxf out
+out/pcb_shape.dxf: src/pcb_shape.scad src/input.preprocessed.dxf
+	mkdir -p out
 	$(OPENSCAD) -o $@ $<
 
 out/jig.stl: src/jig.scad src/input.preprocessed.dxf
+	mkdir -p out
 	$(OPENSCAD) -o $@ $<
 
 out/kicad: input.svg out/pcb_shape.dxf
+	mkdir -p out
 	support/generate_kicad.py $^ $@
 
 src/input.preprocessed.svg: input.svg
 	support/inkscape_svg_filter_layers.py $< $@ --only --name "Test Points" "Mounting Holes" "Grip Slots" "Outline"
-
-out:
-	mkdir -p out
 
 .PHONY: clean
 clean:
