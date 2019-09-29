@@ -61,7 +61,7 @@ def jigerator():
                 flash(f'Error processing SVG file', 'success') # FIXME make this an error, add CSS
             del session['render_job']
 
-    r = make_response(render_template('jigerator.html', has_renders=path.isfile(tempfile_path('output.zip')), **forms))
+    r = make_response(render_template('jigerator.html', has_renders=path.isfile(tempfile_path('sources.zip')), **forms))
     if 'render_job' in session:
         r.headers.set('refresh', '10')
     return r
