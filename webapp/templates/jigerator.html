@@ -102,24 +102,24 @@
       </svg>
 
       <div class="render_output">
-        {% if 'render_job' not in session and not has_renders %}
-          <div class="loading-message">
-            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-            <div><strong>Nothing uploaded yet</strong></div>
-            <div>Upload your SVG file above</div>
-          </div>
-        {% elif 'render_job' in session %}
+        {% if has_renders %}
+        <div class="preview-images">
+          <a href="{{url_for('render_download', file='sources.zip')}}" class="render">Download renders</a>
+
+          <div id="stl-target" class="madeleine"></div>
+        </div>
+        {% elif 'render_job' in session and not has_renders %}
         <div class="loading-message">
           <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
           <div><strong>Processing...</strong></div>
           <div>(this may take several minutes!)</div>
         </div>
         {% else %}
-        <div class="preview-images">
-          <a href="{{url_for('render_download', file='sources.zip')}}" class="render">Download renders</a>
-
-          <div id="stl-target" class="madeleine"></div>
-        </div>
+          <div class="loading-message">
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            <div><strong>Nothing uploaded yet</strong></div>
+            <div>Upload your SVG file above</div>
+          </div>
         {% endif %}
       </div>
 
@@ -132,6 +132,7 @@
           <div class="copyright">&#169; 2019 jaseg</div>
       </div>
     </div>
+    {% if has_renders %}
     <!-- STL viewer -->
     <link href="static/Madeleine.js/src/css/Madeleine.css" rel="stylesheet">
     <script src="static/Madeleine.js/src/lib/stats.js"></script>
@@ -141,11 +142,12 @@
     <script>
     window.onload = function(){
         var madeleine = new Madeleine({
-          target: 'target', // target div id
+          target: 'stl-target', // target div id
           data: '{{url_for('render_download', file='jig.stl')}}', // data path
           path: '.' // path to source directory from current html file
         });
     }; 
     </script>
+    {% endif %}
   </body>
 </html>
