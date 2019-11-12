@@ -27,6 +27,7 @@ def _unfuck_svg_document(temp_svg_path):
         
         command_line.apply_to_layer_content(layer_copy, 'ObjectToPath')
         command_line.apply_to_layer_content(layer_copy, 'SelectionUnGroup')
+        command_line.apply_to_layer_content(layer_copy, 'EditUnlinkClone')
         
         if not i.use_paths:
             command_line.apply_to_layer_content(layer_copy, 'StrokeToPath')
